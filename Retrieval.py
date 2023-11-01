@@ -9,6 +9,7 @@ import glob
 from PIL import Image
 #import ruamel_yaml as yaml
 import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 from torchvision import transforms
 import torch
 import torch.backends.cudnn as cudnn
@@ -267,7 +268,7 @@ def inference(model, data_loader, tokenizer, device, config):
         normalize,
     ])
     batch_size = 32
-    path_of_the_directory = '/media/ubuntu20/Backup/RaSa-master/Test/'
+    path_of_the_directory = 'C:/Users/Hp/Rasa/Test/'
     dataset = Custom_dataset(test_transform, path_of_the_directory)
     #dataloader = create_loader(dataset, batch_size=32, sampler=None, collate_fn=None)
     #path_of_the_directory = '/media/ubuntu20/Backup/Test'
@@ -313,7 +314,7 @@ def inference(model, data_loader, tokenizer, device, config):
     print("Top 5 element values:", values) 
     # print index of top 5 elements 
     print("Top 5 element indices:", indexes) 
-    path_of_the_directory = '/media/ubuntu20/Backup/RaSa-master/Test/output/'
+    path_of_the_directory = 'C:/Users/Hp/Rasa/Test/output/'
     try:
         files = glob.glob(os.path.join(path_of_the_directory, '*'))
         for file in files:
@@ -496,7 +497,12 @@ if __name__ == '__main__':
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     parser.add_argument('--distributed', default=True, type=bool)
     args = parser.parse_args()
-    config = yaml.load(open(args.config, 'r'), Loader=yaml.Loader)
+    #config = yaml.load(open(args.config, 'r'), Loader=yaml.Loader)
+    yaml=YAML(typ='rt')
+    config = yaml.load(open(args.config, 'r'))
+    
+    
+
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
     yaml.dump(config, open(os.path.join(args.output_dir, 'config.yaml'), 'w'))
     main(args, config)
